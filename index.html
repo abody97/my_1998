@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> تحدي </title>
+    <style>
+        body {
+            background-color: #ffc0cb;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .card {
+            background-color: #ff69b4;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 300px;
+            cursor: pointer;
+        }
+        .card p {
+            font-size: 1.2em;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #ff1493;
+        }
+    </style>
+</head>
+<body>
+    <h1>لعبة كروت التحدي الرومانسية</h1>
+    <p>اضغط على البطاقة لسحب تحدي وتنفيذه مع الشريك</p>
+
+    <div class="card" id="challengeCard">
+        <p>اضغط هنا لسحب التحدي</p>
+    </div>
+
+    <div class="buttons">
+        <button id="shuffleButton">خلط الأسئلة</button>
+        <button id="resetButton">بداية من جديد</button>
+    </div>
+
+    <script>
+        // تعريف قائمة التحديات
+        let challenges = [
+            "قبلة سريعة",
+            "تبادل كلمات حب لمدة 5 دقائق",
+            "اعتراف بأمر لم تخبرني به من قبل",
+            "عناق لمدة دقيقة كاملة",
+            "نزهة قصيرة تحت ضوء النجوم",
+            "إعداد وجبة خفيفة معًا",
+            "إرسال رسالة حب على الهاتف الآن",
+            "مشاهدة فيلم رومانسي معًا",
+            "رسم قلب على يد الشريك",
+            "قول 3 أشياء تحبها في الشريك",
+            "مفاجأة الشريك بهدية بسيطة",
+            "كتابة رسالة حب وتركها في مكان يراها الشريك",
+            "إعداد حمام دافئ مع الشموع",
+            "رقصة رومانسية بدون موسيقى",
+            "قضاء 10 دقائق في الحديث عن أول لقاء",
+            "إعداد مشروب مفضل للشريك",
+            "التقاط صورة سيلفي رومانسية",
+            "الاستماع لموسيقى هادئة معًا",
+            "القيام بتدليك خفيف لكتفي الشريك",
+            "قراءة كتاب معًا لمدة 10 دقائق",
+            "الاعتراف بشيء تحبه في الشريك كل دقيقة لمدة 5 دقائق",
+            "إعداد إفطار مميز في الصباح",
+            "لعبة سؤال وجواب عن أمور شخصية",
+            "إعداد قائمة بأماكن ترغبون بزيارتها معًا",
+            "الجلوس في مكان هادئ والتأمل معًا لمدة 5 دقائق",
+            "إعطاء الشريك وردة حمراء",
+            "التخطيط لرحلة قصيرة في عطلة نهاية الأسبوع",
+            "التفكير في حلم مشترك والعمل على وضع خطة لتحقيقه",
+            "إعادة تمثيل مشهد رومانسي من فيلم تحبونه",
+            "تبادل قراءة الشعر لبعضكم البعض",
+            "تقديم الشوكولاتة المفضلة للشريك",
+            "كتابة 5 أسباب لماذا تحب الشريك",
+            "إنشاء قائمة أغاني مخصصة للشريك",
+            "ممارسة لعبة لوحية معًا",
+            "القيام بنزهة قصيرة في الحديقة",
+            "التحدث عن خططكم المستقبلية معًا",
+            "تبادل العناق لمدة 30 ثانية",
+            "إعداد عشاء رومانسي في المنزل",
+            "مشاهدة غروب الشمس معًا",
+            "مشاركة قصة طريفة حدثت لكما",
+            "تخصيص ساعة للحديث فقط عن الأشياء الإيجابية في علاقتكما",
+            "إرسال رسالة صوتية مليئة بالحب",
+            "التقاط صورة للشريك أثناء لحظة غير متوقعة",
+            "إعداد قائمة بأحلام الطفولة لكل منكما",
+            "قول \"أحبك\" بلغات مختلفة",
+            "تقليد مشهد من فيلم تحبهما",
+            "الجلوس سويًا ومشاركة ذكريات الطفولة",
+            "تبادل رسائل حب مكتوبة على ورق",
+            "التفكير في نشاط جديد يمكن تجربته معًا",
+            "إعداد حلوى معًا ومشاركتها",
+            "اللعب بلعبة فيديو معًا",
+            "القيام بعمل فني مشترك مثل الرسم أو الحرف اليدوية",
+        ];
+
+        // قائمة التحديات المستخدمة لتجنب التكرار حتى انتهاء جميع التحديات
+        let usedChallenges = [];
+
+        // عناصر HTML
+        const card = document.getElementById("challengeCard");
+        const shuffleButton = document.getElementById("shuffleButton");
+        const resetButton = document.getElementById("resetButton");
+
+        // دالة لاختيار تحدي عشوائي من القائمة
+        function getRandomChallenge() {
+            // إذا انتهت قائمة التحديات، قم بإعادة التحديات المستخدمة للقائمة الأساسية
+            if (challenges.length === 0) {
+                challenges = usedChallenges;
+                usedChallenges = [];
+            }
+            // اختيار تحدي عشوائي وحذفه من القائمة
+            const randomIndex = Math.floor(Math.random() * challenges.length);
+            const challenge = challenges.splice(randomIndex, 1)[0];
+            // إضافة التحدي المستخدم إلى القائمة المستخدمة
+            usedChallenges.push(challenge);
+            return challenge;
+        }
+
+        // حدث عند النقر على البطاقة لسحب تحدي جديد
+        card.addEventListener("click", () => {
+            card.innerHTML = `<p>${getRandomChallenge()}</p>`;
+        });
+
+        // حدث عند النقر على زر خلط الأسئلة لسحب تحدي جديد
+        shuffleButton.addEventListener("click", () => {
+            card.innerHTML = `<p>${getRandomChallenge()}</p>`;
+        });
+
+        // حدث عند النقر على زر البداية من جديد لإعادة التحديات إلى الوضع الأصلي
+        resetButton.addEventListener("click", () => {
+            card.innerHTML = `<p>اضغط هنا لسحب التحدي</p>`;
+            challenges = challenges.concat(usedChallenges);
+            usedChallenges = [];
+        });
+    </script>
+</body>
+</html>
